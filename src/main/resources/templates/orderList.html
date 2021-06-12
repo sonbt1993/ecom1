@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+</head>
+<body>
+<th:block th:include="/_header"></th:block>
+<th:block th:include="/_menu"></th:block>
+
+<div class="page-title">Order List</div>
+<table border="1" style="width:100%">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Order Id</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=orderDate&sortDir=' + ${reverseSortDir}}">Order Date</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=customerName&sortDir=' + ${reverseSortDir}}">Customer Name</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=customerAddress&sortDir=' + ${reverseSortDir}}">Customer Address</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=customerEmail&sortDir=' + ${reverseSortDir}}">Customer Email</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/orderList/' + ${currentPage} + '?sortField=amount&sortDir=' + ${reverseSortDir}}">Amount</a>
+        </th>
+
+        <th>Action</th>
+    </tr>
+    <tr th:each="order : ${orderList}">
+        <td th:utext="${order.id}"></td>
+        <td th:utext="${#dates.format(order.orderDate,'dd-MM-yyyy HH:mm')}"></td>
+        <td th:utext="${order.customerName}"></td>
+        <td th:utext="${order.customerAddress}"></td>
+        <td th:utext="${order.customerEmail}"></td>
+        <td style="color:red;" th:utext="${#numbers.formatDecimal(order.amount,3,'COMMA',0,'POINT')}">
+        </td>
+        <td><a th:href="@{|/admin/order?orderId=${order.id}|}">View</a></td>
+    </tr>
+</table>
+
+<div>&nbsp;</div>
+<div><i>Sorted by [[${sortField}]] in [[${sortDir}]] order</i></div>
+<div>&nbsp;</div>
+
+<div class="page-navigator" th:if="${totalPages > 1}">
+    Total Items: [[${totalItems}]]
+    &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+
+    <a class="nav-item" th:if="${currentPage > 1}" th:href="@{'/admin/orderList/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+    <span class="nav-item" th:unless="${currentPage > 1}">First</span>
+    &nbsp;&nbsp;
+
+    <a class="nav-item" th:if="${currentPage > 1}" th:href="@{'/admin/orderList/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+    <span class="nav-item" th:unless="${currentPage > 1}">Previous</span>
+
+    &nbsp;&nbsp;
+
+    <span class="nav-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+			<a class="nav-item" th:if="${currentPage != i}" th:href="@{'/admin/orderList/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+			<span class="nav-item" th:unless="${currentPage != i}">[[${i}]]</span>
+			&nbsp;
+		</span>
+
+    <a class="nav-item" th:if="${currentPage < totalPages}" th:href="@{'/admin/orderList/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+    <span class="nav-item" th:unless="${currentPage < totalPages}">Next</span>
+    &nbsp;&nbsp;
+
+    <a class="nav-item" th:if="${currentPage < totalPages}" th:href="@{'/admin/orderList/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+    <span class="nav-item" th:unless="${currentPage < totalPages}">Last</span>
+</div>
+
+
+</body>
+</html>
