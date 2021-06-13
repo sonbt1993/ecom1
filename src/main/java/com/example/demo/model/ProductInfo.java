@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ProductInfo {
     private Long id;
     private String name;
-    private double price;
+    private Double price;
 
     public ProductInfo(Product product) {
         this.id = product.getId();

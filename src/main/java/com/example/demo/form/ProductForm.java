@@ -13,7 +13,7 @@ public class ProductForm {
     private Long id;
     private String name;
     private String brand;
-    private double price;
+    private Double price;
     private MultipartFile fileData;
     private boolean newProduct = false;
 

@@ -80,8 +80,6 @@ public class AdminController {
         productForm.setBrand(product.getBrand());
         productForm.setPrice(product.getPrice());
         model.addAttribute("productForm", productForm);
-        System.out.println(product);
-        System.out.println(productForm);
         return "product";
     }
 
@@ -113,7 +111,7 @@ public class AdminController {
 
     @PostMapping("/createProduct")
     public String createProduct(Model model,
-                              @ModelAttribute("productForm") ProductForm productForm,
+                              @ModelAttribute("productForm") @Validated ProductForm productForm,
                               BindingResult result) {
         if (result.hasErrors()) {
             return "createProduct";
